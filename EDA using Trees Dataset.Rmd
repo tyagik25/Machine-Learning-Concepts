@@ -1,0 +1,228 @@
+---
+title: "Analysis on Trees Dataset using Descriptive Statistics"
+author:
+- "Kashika Tyagi"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    df_print: paged
+---
+
+## (a) Print the trees dataset
+```{r}
+library(ggplot2)
+library(moments)
+trees #loading the dataset
+```
+```{r}
+head(trees) #returns the first 6 rows from the trees dataset
+tail(trees) #returns the last 6 rows from the trees dataset
+```
+
+```{r}
+str(trees) #display the structure of trees dataset
+```
+
+## (b) Print the summary measures for each variable in the dataset
+```{r}
+summary(trees) #prints the summary measures for each variable in the dataset
+
+```
+
+Alternatively, in order to get the count of variables and observations and their appropriate summaries
+
+```{r}
+library(Hmisc)
+describe(trees)
+```
+
+
+Alternatively, displaying detail summary of each variable
+```{r}
+trees_girth <- summary(trees$Girth) #display detail summary of the variable Girth 
+trees_girth
+
+sprintf("Variance and standard deviation of trees$Girth is %#.2f and %#.2f", var(trees$Girth), sd(trees$Girth)) #display variance and SD
+
+sprintf("Skewness and Kurtosis of trees$Girth is %#.2f and %#.2f", skewness(trees$Girth), kurtosis(trees$Girth)) #display Skewness and Kurtosis
+```
+
+```{r}
+trees_height  <- summary(trees$Height) #display detail summary of the variable Height 
+trees_height
+
+sprintf("Variance and standard deviation of trees$Height is %#.2f and %#.2f", var(trees$Height), sd(trees$Height)) #display variance and SD
+
+sprintf("Skewness and Kurtosis of trees$Height is %#.2f and %#.2f", skewness(trees$Height), kurtosis(trees$Height)) #display Skewness and Kurtosis
+```
+```{r}
+trees_volume  <- summary(trees$Volume) #display detail summary of the variable Volume
+trees_volume
+
+sprintf("Variance and standard deviation of trees$Height is %#.2f and %#.2f", var(trees$Volume), sd(trees$Volume)) #display variance and SD
+
+sprintf("Skewness and Kurtosis of trees$Height is %#.2f and %#.2f", skewness(trees$Volume), kurtosis(trees$Volume)) #display Skewness and Kurtosis
+```
+
+## (c) Create Histograms and Density Plots
+
+```{r}
+
+hist(trees$Girth) 
+
+#Alternatively, we can plot the histogram more effectively using ggplot package
+library(ggplot2)
+
+ggplot(trees, aes(x=Girth)) +
+  geom_histogram(binwidth = 1.5, colour="darkblue", fill="steelblue")
+
+#Histogram with mean line
+
+ggplot(trees, aes(x=Girth)) +
+ geom_histogram(binwidth = 1.5, colour="black", fill="steelblue") +
+  geom_vline(aes(xintercept=mean(Girth)),
+            color="red", linetype="dashed", size=1)
+
+#Histogram with density plot
+
+ggplot(trees, aes(x=Girth)) +
+  geom_histogram(aes(y=..density..), binwidth = 1.5, colour="black", fill="steelblue") +
+    geom_density(alpha=0.2, fill="blue")
+
+```
+```{r}
+hist(trees$Height) 
+
+#Alternatively, we can plot the histogram more effectively using ggplot package
+
+library(ggplot2)
+
+ggplot(trees, aes(x=Height)) +
+  geom_histogram(binwidth = 1.5, colour="darkblue", fill="steelblue")
+
+#Histogram with mean line
+
+ggplot(trees, aes(x=Height)) +
+ geom_histogram(binwidth = 1.5, colour="black", fill="steelblue") +
+  geom_vline(aes(xintercept=mean(Height)),
+            color="red", linetype="dashed", size=1)
+
+#Histogram with density plot
+
+ggplot(trees, aes(x=Height)) +
+  geom_histogram(aes(y=..density..), binwidth = 1.5, colour="black", fill="steelblue") +
+    geom_density(alpha=0.2, fill="blue")
+```
+```{r}
+hist(trees$Volume) 
+
+#Alternatively, we can plot the histogram more effectively using ggplot package
+
+library(ggplot2)
+
+ggplot(trees, aes(x=Volume)) +
+  geom_histogram(binwidth = 1.5, colour="darkblue", fill="steelblue")
+
+#Histogram with mean line
+
+ggplot(trees, aes(x=Volume)) +
+ geom_histogram(binwidth = 1.5, colour="black", fill="steelblue") +
+  geom_vline(aes(xintercept=mean(Volume)),
+            color="red", linetype="dashed", size=1)
+
+#Histogram with density plot
+
+ggplot(trees, aes(x=Volume)) +
+  geom_histogram(aes(y=..density..), binwidth = 1.5, colour="black", fill="steelblue") +
+    geom_density(alpha=0.2, fill="blue")
+```
+
+### Density Plots 
+
+Density Plots are used to view the distribution of each variable
+
+```{r}
+#Density plot of Girth
+
+plot(density(trees$Girth)) #kernel density plot
+
+d <- density(trees$Girth)
+plot(d, main="Kernel Density of Girth") #filled density plot
+polygon(d, col="blue", border="black")
+
+```
+
+```{r}
+#Density plot of Height
+
+plot(density(trees$Height)) #kernel density plot
+
+d <- density(trees$Height)
+plot(d, main="Kernel Density of Height") #filled density plot
+polygon(d, col="blue", border="black")
+```
+
+```{r}
+#Density plot of Volume
+
+plot(density(trees$Volume)) #kernel density plot
+
+d <- density(trees$Volume)
+plot(d, main="Kernel Density of Volume") #filled density plot
+polygon(d, col="blue", border="black")
+```
+
+
+## (d) Create Boxplots
+
+Boxplot is used to show the shape of the distribution, its central value, and its variability
+
+Rug is used to see the data points across the box plot; it adds (1-d plot) of the data to the plot.
+
+```{r}
+#Boxplot for the variable Girth
+boxplot(trees$Girth, horizontal = TRUE, col = c("yellow"),main = "Boxplot of Girth")
+rug(trees$Girth, side = 1) #rug is used to see the data points across the box plot
+
+#Boxplot for the variable Height
+boxplot(trees$Height, horizontal = TRUE, col = c("green"), main = "Boxplot of Height")
+rug(trees$Height, side = 1)
+
+#Boxplot for the variable Volume
+boxplot(trees$Volume, horizontal = TRUE, col = c("red"), main = "Boxplot of Volume")
+rug(trees$Volume, side = 1)
+
+
+```
+
+Combined Boxplot of all the 3 variables
+
+The boxplots of Height shows a normal distribution, Girth is slightly positively-skewed and Volume is positively skewed.
+```{r}
+#Combined Boxplot of all the 3 variables
+
+boxplot(trees$Girth, trees$Height, trees$Volume, horizontal = TRUE, 
+        col = c("yellow","green","red"), names= c("Girth","Height","Volume"), main = "Combined Boxplot of all the 3 variables")
+```
+
+# (e) Normal Probability Plots
+
+Normal Probability Plots are used to assess whether a dataset is normally distributed or not specifically, to identify outliers or any unusual values.
+
+```{r}
+qqnorm(trees$Girth, xlab = "", ylab = "Girth", main = "Girth of trees"); qqline(trees$Girth, col = 2)
+
+qqnorm(trees$Volume, xlab = "", ylab = "Volume", main = "Volume of trees"); qqline(trees$Volume, col = 2)
+
+```
+
+From the visualizations above, we can see that the normal probability distribution plots of Girth and Volume are skewed right i.e., the plot shows a strongly non-linear pattern. Specifically, it shows a quadratic pattern in which all the points are below a reference line drawn between the first and last points.
+
+```{r}
+qqnorm(trees$Height, xlab = "", ylab = "Height", main = "Height of trees");
+qqline(trees$Height, col = 2)
+
+```
+
+Normal Probability plot of the Height is short-tailed i.e., it shows a non-linear pattern.
+
